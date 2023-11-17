@@ -1,0 +1,15 @@
+###############################################################################
+## PROJECT PARAMETERS                                                        ##
+###############################################################################
+
+# Configure your project parameters here
+
+[project]
+project_dir = ''                       # BETWEEN SINGLE QUOTES! # If empty, project dir is current dir
+inputs_folder_name = 'data/inputs'
+outputs_folder_name = 'data/outputs'
+
+[calibration]
+corners_nb = [4, 7]          # [H,W] rather than [w,h]
+square_size = 43.75          # mm # [h,w] if square is actually a rectangle (should be float)
+show_corner_detection = true # true or false (lowercase)
