@@ -3,14 +3,18 @@
 #include <vector>
 #include <string>
 #include <thread>
+#include <fstream>
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/utils/logger.hpp>
+#include <toml++/toml.hpp>
 
 #include "cameraCalibration.hpp"
 
-const cv::Size2i patternSize(7, 4);
-const float cubeSize = 47.2f; // mm
+static auto config = toml::parse_file(std::string(DIRECTORY_PATH) + "/conf.toml");
+
+const cv::Size2i patternSize(config["checkerboard"]["pattern_size"][0].value_or(7), config["checkerboard"]["pattern_size"][1].value_or(4));
+const float cubeSize = config["checkerboard"]["cube_size"].value_or(1.0f);
 
 static bool finishedAsking = false;
 std::string cam1_str, cam2_str; // cam1 => left , cam2 => right
@@ -99,9 +103,9 @@ int main()
     cv::VideoCapture cap1(cam1);
     if (!cap1.isOpened())
         throw std::runtime_error("can not open the left camera.");
-    cap1.set(cv::CAP_PROP_BRIGHTNESS, 40);
-    cap1.set(cv::CAP_PROP_CONTRAST, 30);
-    cap1.set(cv::CAP_PROP_SATURATION, 70);
+    cap1.set(cv::CAP_PROP_BRIGHTNESS, config["camera"]["brightness"].value_or(40));
+    cap1.set(cv::CAP_PROP_CONTRAST, config["camera"]["contrast"].value_or(30));
+    cap1.set(cv::CAP_PROP_SATURATION, config["camera"]["saturation"].value_or(70));
 
     int width = cap1.get(cv::CAP_PROP_FRAME_WIDTH);
     int height = cap1.get(cv::CAP_PROP_FRAME_HEIGHT);
@@ -113,7 +117,7 @@ int main()
                                           cv::Size2i(width, height),
                                           patternSize,
                                           cubeSize,
-                                          10);
+                                          config["frames"]["number_of_frames_intrinsic"].value_or(10));
 
     printf("Done, RMS: %f\r\n\n", (float)retLeft);
 
@@ -123,9 +127,9 @@ int main()
     cv::VideoCapture cap2(cam2);
     if (!cap2.isOpened())
         throw std::runtime_error("can not open the left camera.");
-    cap2.set(cv::CAP_PROP_BRIGHTNESS, 40);
-    cap2.set(cv::CAP_PROP_CONTRAST, 30);
-    cap2.set(cv::CAP_PROP_SATURATION, 70);
+    cap2.set(cv::CAP_PROP_BRIGHTNESS, config["camera"]["brightness"].value_or(40));
+    cap2.set(cv::CAP_PROP_CONTRAST, config["camera"]["contrast"].value_or(30));
+    cap2.set(cv::CAP_PROP_SATURATION, config["camera"]["saturation"].value_or(70));
 
     cv::Mat cameraMatrixRight, distCoeffsRight;
     double retRight = intrinsicCalibration(cap2,
@@ -134,7 +138,7 @@ int main()
                                            cv::Size2i(width, height),
                                            patternSize,
                                            cubeSize,
-                                           10);
+                                           config["frames"]["number_of_frames_intrinsic"].value_or(10));
 
     printf("Done, RMS: %f\r\n\n", (float)retRight);
 
@@ -153,11 +157,49 @@ int main()
                                             cv::Size2i(width, height),
                                             patternSize,
                                             cubeSize,
-                                            15);
+                                            config["frames"]["number_of_frames_extrinsic"].value_or(15));
     cap1.release();
     cap2.release();
 
     printf("Done, RMS: %f\r\n\n", (float)retStereo);
+
+    // step 5: writing calibration data to file
+    std::fstream configFile;
+    configFile.open(std::string(DIRECTORY_PATH) + config["outputs"]["stereo_parameters_path"].value_or("/stereoParameters.txt"), std::ios::out);
+
+    // Mint1
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+            configFile << std::setprecision(10) << cameraMatrixLeft.at<double>(i, j) << " ";
+    }
+    configFile << "\n";
+
+    // Mint2
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+            configFile << cameraMatrixRight.at<double>(i, j) << " ";
+    }
+    configFile << "\n";
+
+    // R
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+            configFile << R.at<double>(i, j) << " ";
+    }
+    configFile << "\n";
+
+    // T
+    for (int i = 0; i < 3; i++)
+        configFile << T.at<double>(i, 0) << " ";
+
+    configFile.close();
+
+    std::cout << "Stereo parameters are saved to "
+              << std::string(DIRECTORY_PATH) + config["outputs"]["stereo_parameters_path"].value_or("/stereoParameters.txt")
+              << std::endl;
 
     return 0;
 }

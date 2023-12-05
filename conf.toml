@@ -1,0 +1,16 @@
+[checkerboard]
+pattern_size = [7, 4] # [columns, rows]
+cube_size = 47.2      # mm
+
+[camera]
+brightness = 40
+contrast = 30
+saturation = 70
+
+[frames]
+number_of_frames_intrinsic = 10
+number_of_frames_extrinsic = 15
+capture_time = 2000             # ms
+
+[outputs]
+stereo_parameters_path = "/stereoParameters.txt"
