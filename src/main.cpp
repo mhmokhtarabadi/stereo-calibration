@@ -4,6 +4,7 @@
 #include <string>
 #include <thread>
 #include <fstream>
+#include <filesystem>
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/utils/logger.hpp>
@@ -42,42 +43,37 @@ int main()
 
     std::thread askThread(askCameraIndexes);
 
-    std::vector<int> cameraIndexes;
-    cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_SILENT);
-    for (int i = 0; i < 10; i++)
+    std::vector<std::string> cameraNames;
+    for (const auto &entity : std::filesystem::directory_iterator("/dev/v4l/by-id/"))
     {
-        cv::VideoCapture cap(i);
+        cv::VideoCapture cap(entity.path());
 
         if (cap.isOpened())
         {
-            cameraIndexes.push_back(i);
+            cameraNames.push_back(entity.path());
             cap.release();
         }
     }
-    cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_WARNING);
 
     std::vector<cv::VideoCapture> caps;
-    for (int index : cameraIndexes)
+    for (std::string name : cameraNames)
     {
-        caps.push_back(cv::VideoCapture(index));
+        caps.push_back(cv::VideoCapture(name));
     }
 
     while (true)
     {
         std::vector<cv::Mat> frames;
-        for (size_t i = 0; i < cameraIndexes.size(); i++)
+        for (size_t i = 0; i < cameraNames.size(); i++)
         {
             cv::Mat frame;
             if (!caps[i].read(frame))
             {
-                char *message;
-                sprintf(message, "can not read frame from camera index %i", cameraIndexes[i]);
+                std::string message = "can not read frame from camera path:\n" + cameraNames[i];
                 throw std::runtime_error(message);
             }
-            char text[30];
-            sprintf(text, "index = %i", cameraIndexes[i]);
-            std::string text_str(text);
-            cv::putText(frame, text_str, cv::Point2i(50, 50), cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar(0, 0, 255), 3);
+            std::string text = "index = " + std::to_string(i);
+            cv::putText(frame, text, cv::Point2i(50, 50), cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar(0, 0, 255), 3);
             cv::resize(frame, frame, cv::Size2i(320, 240));
             frames.push_back(frame);
         }
@@ -100,7 +96,7 @@ int main()
     // Step 2: left camera calibration
     printf("Step 2: left camera calibration\r\n");
 
-    cv::VideoCapture cap1(cam1);
+    cv::VideoCapture cap1(cameraNames[cam1]);
     if (!cap1.isOpened())
         throw std::runtime_error("can not open the left camera.");
     cap1.set(cv::CAP_PROP_BRIGHTNESS, config["camera"]["brightness"].value_or(40));
@@ -124,7 +120,7 @@ int main()
     // Step 3: right camera calibration
     printf("Step 3: right camera calibration\r\n");
 
-    cv::VideoCapture cap2(cam2);
+    cv::VideoCapture cap2(cameraNames[cam2]);
     if (!cap2.isOpened())
         throw std::runtime_error("can not open the left camera.");
     cap2.set(cv::CAP_PROP_BRIGHTNESS, config["camera"]["brightness"].value_or(40));
@@ -194,6 +190,11 @@ int main()
     // T
     for (int i = 0; i < 3; i++)
         configFile << T.at<double>(i, 0) << " ";
+    configFile << "\n";
+
+    // camera names
+    configFile << cameraNames[cam1] << "\n"
+               << cameraNames[cam2];
 
     configFile.close();
 

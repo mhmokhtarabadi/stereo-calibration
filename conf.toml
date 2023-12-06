@@ -1,6 +1,6 @@
 [checkerboard]
 pattern_size = [7, 4] # [columns, rows]
-cube_size = 47.2      # mm
+cube_size = 43.75     # mm
 
 [camera]
 brightness = 40
