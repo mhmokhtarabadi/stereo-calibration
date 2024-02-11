@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<svg width="297mm" height="420mm" viewBox="0 0 297 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="stroke:black; fill:none; stroke-width:0.5pt; stroke-linejoin:round; text-anchor:middle" font-family="Helvetica, Arial, FreeSans, Sans, sans, sans-serif">
+
+<g>
+
+<path d="M23.5,35.0 A25.0,25.0 0,0,1 48.5,10.0 A25.0,25.0 0,0,1 73.5,35.0 L73.5,60.0 L48.5,60.0 A25.0,25.0 0,0,1 23.5,35.0 " fill="black" stroke="none" />
+
+<path d="M23.5,135.0 A25.0,25.0 0,0,1 48.5,110.0 L73.5,110.0 L73.5,135.0 L73.5,160.0 L48.5,160.0 A25.0,25.0 0,0,1 23.5,135.0 " fill="black" stroke="none" />
+
+<path d="M23.5,235.0 A25.0,25.0 0,0,1 48.5,210.0 L73.5,210.0 L73.5,235.0 L73.5,260.0 L48.5,260.0 A25.0,25.0 0,0,1 23.5,235.0 " fill="black" stroke="none" />
+
+<path d="M23.5,335.0 A25.0,25.0 0,0,1 48.5,310.0 L73.5,310.0 L73.5,335.0 L73.5,360.0 L48.5,360.0 A25.0,25.0 0,0,1 23.5,335.0 " fill="black" stroke="none" />
+
+<rect x="73.5" y="60.0" width="50.0" height="50.0" fill="black" stroke="none" />
+
+<rect x="73.5" y="160.0" width="50.0" height="50.0" fill="black" stroke="none" />
+
+<rect x="73.5" y="260.0" width="50.0" height="50.0" fill="black" stroke="none" />
+
+<path d="M73.5,385.0 L73.5,360.0 L98.5,360.0 L123.5,360.0 L123.5,385.0 A25.0,25.0 0,0,1 98.5,410.0 A25.0,25.0 0,0,1 73.5,385.0 " fill="black" stroke="none" />
+
+<path d="M123.5,35.0 A25.0,25.0 0,0,1 148.5,10.0 A25.0,25.0 0,0,1 173.5,35.0 L173.5,60.0 L148.5,60.0 L123.5,60.0 L123.5,35.0 " fill="black" stroke="none" />
+
+<rect x="123.5" y="110.0" width="50.0" height="50.0" fill="black" stroke="none" />
+
+<rect x="123.5" y="210.0" width="50.0" height="50.0" fill="black" stroke="none" />
+
+<rect x="123.5" y="310.0" width="50.0" height="50.0" fill="black" stroke="none" />
+
+<rect x="173.5" y="60.0" width="50.0" height="50.0" fill="black" stroke="none" />
+
+<rect x="173.5" y="160.0" width="50.0" height="50.0" fill="black" stroke="none" />
+
+<rect x="173.5" y="260.0" width="50.0" height="50.0" fill="black" stroke="none" />
+
+<path d="M173.5,385.0 L173.5,360.0 L198.5,360.0 L223.5,360.0 L223.5,385.0 A25.0,25.0 0,0,1 198.5,410.0 A25.0,25.0 0,0,1 173.5,385.0 " fill="black" stroke="none" />
+
+<path d="M223.5,35.0 A25.0,25.0 0,0,1 248.5,10.0 A25.0,25.0 0,0,1 273.5,35.0 A25.0,25.0 0,0,1 248.5,60.0 L223.5,60.0 L223.5,35.0 " fill="black" stroke="none" />
+
+<path d="M223.5,135.0 L223.5,110.0 L248.5,110.0 A25.0,25.0 0,0,1 273.5,135.0 A25.0,25.0 0,0,1 248.5,160.0 L223.5,160.0 L223.5,135.0 " fill="black" stroke="none" />
+
+<path d="M223.5,235.0 L223.5,210.0 L248.5,210.0 A25.0,25.0 0,0,1 273.5,235.0 A25.0,25.0 0,0,1 248.5,260.0 L223.5,260.0 L223.5,235.0 " fill="black" stroke="none" />
+
+<path d="M223.5,335.0 L223.5,310.0 L248.5,310.0 A25.0,25.0 0,0,1 273.5,335.0 A25.0,25.0 0,0,1 248.5,360.0 L223.5,360.0 L223.5,335.0 " fill="black" stroke="none" />
+
+</g>
+
+</svg>
+
